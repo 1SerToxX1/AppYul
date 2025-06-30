@@ -6,11 +6,13 @@
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/securityModule/usuario/ControlSesionUsuario.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/securityModule/usuario/ControlAutenticarUsuario.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/securityModule/usuario/FormAutenticarUsuario.java</file>
-            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/securityModule/usuario/FormBienvenida.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/AppJoyeriaYuler.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/usuario/UsuarioPrivilegioDAO.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/usuario/UsuarioDAO.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/usuario/estadoDAO.java</file>
+            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/Conexion.java</file>
+            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/moduloCliente/controlRegistrarCliente.java</file>
+            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/moduloCliente/FormRegistrarCliente.java</file>
         </group>
     </open-files>
 </project-private>

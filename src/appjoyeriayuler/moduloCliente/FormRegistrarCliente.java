@@ -36,10 +36,15 @@ public class FormRegistrarCliente extends javax.swing.JFrame {
         txtTelefono.setEnabled(false);
         btnRegistrarCliente.setEnabled(false);
     }
+    
+    public void desactivarCamposSinCliente(){
+        txtRUC.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        btnRegistrarCliente.setEnabled(false);
+    }
 
     // Método para habilitar los campos cuando el DNI es válido
-    public void habilitarTxt() {
-        txtCliente.setEnabled(true);
+    public void habilitarCampos() {
         txtRUC.setEnabled(true);
         txtTelefono.setEnabled(true);
         btnRegistrarCliente.setEnabled(true);
@@ -320,9 +325,7 @@ public class FormRegistrarCliente extends javax.swing.JFrame {
         String nombre = txtCliente.getText().trim();
 
     if (!controlador.esNombreClienteValido(nombre)) {
-        txtRUC.setEnabled(false);
-        txtTelefono.setEnabled(false);
-        btnRegistrarCliente.setEnabled(false);
+        desactivarCamposSinCliente();
     }
     // No actives nada aquí, esperas al Enter (igual que con DNI)
     }//GEN-LAST:event_txtClienteKeyReleased
@@ -331,15 +334,11 @@ public class FormRegistrarCliente extends javax.swing.JFrame {
         String nombre = txtCliente.getText().trim();
 
     if (!validarClienteCompleto(nombre)) {
-        txtRUC.setEnabled(false);
-        txtTelefono.setEnabled(false);
-        btnRegistrarCliente.setEnabled(false);
+        desactivarCamposSinCliente();
         return;
     }
 
-    txtRUC.setEnabled(true);
-    txtTelefono.setEnabled(true);
-    btnRegistrarCliente.setEnabled(true);
+    habilitarCampos();
     }//GEN-LAST:event_txtClienteActionPerformed
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed

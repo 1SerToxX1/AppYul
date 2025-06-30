@@ -52,13 +52,18 @@ public class controlRegistrarCliente {
     }
 
     // Método para verificar si el DNI ya existe en la base de datos
-    public boolean dniExiste(String dni) {
+public boolean dniExiste(String dni) {
+    try {
         if (clienteDAO.dniExiste(dni)) {
             MensajeSistema.mostrarError("El DNI ya está registrado.");
-            return true;  // Si el DNI existe, retornamos true para indicar que ya está registrado
+            return true;
         }
-        return false;  // Si el DNI no existe, retornamos false
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al verificar el DNI. Intente más tarde.");
+        e.printStackTrace(); // Reemplazar por logger en producción
     }
+    return false;
+}
 
         // Validar si el nombre del cliente está vacío
     public boolean esNombreClienteValido(String nombre) {
@@ -119,9 +124,14 @@ public boolean esRucLongitudValida(String ruc) {
 
 // Verificar si el RUC ya está registrado en la base de datos
 public boolean rucExiste(String ruc) {
-    if (clienteDAO.rucExiste(ruc)) {
-        MensajeSistema.mostrarError("El RUC se encuentra registrado.");
-        return true;
+    try {
+        if (clienteDAO.rucExiste(ruc)) {
+            MensajeSistema.mostrarError("El RUC se encuentra registrado.");
+            return true;
+        }
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al verificar el RUC. Intente más tarde.");
+        e.printStackTrace();
     }
     return false;
 }
@@ -151,26 +161,36 @@ public boolean esTelefonoLongitudValida(String telefono) {
 
 // Validar si el teléfono ya existe en la base de datos
 public boolean telefonoExiste(String telefono) {
-    if (clienteDAO.telefonoExiste(telefono)) {
-        MensajeSistema.mostrarError("El Teléfono se encuentra registrado.");
-        return true;
+    try {
+        if (clienteDAO.telefonoExiste(telefono)) {
+            MensajeSistema.mostrarError("El Teléfono se encuentra registrado.");
+            return true;
+        }
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al verificar el Teléfono. Intente más tarde.");
+        e.printStackTrace();
     }
     return false;
 }
 
 // Método para registrar un cliente desde el controller con mensaje incluido
 public boolean registrarCliente(String dni, String nombre, String ruc, String telefono) {
-    boolean registrado = clienteDAO.registrarCliente(dni, nombre, ruc, telefono);
+    try {
+        boolean registrado = clienteDAO.registrarCliente(dni, nombre, ruc, telefono);
 
-    if (registrado) {
-        MensajeSistema.mostrarInfo("Cliente registrado correctamente.");
-        return true;
-    } else {
-        MensajeSistema.mostrarError("Ocurrió un error al registrar el cliente.");
+        if (registrado) {
+            MensajeSistema.mostrarInfo("Cliente registrado correctamente.");
+            return true;
+        } else {
+            MensajeSistema.mostrarError("Ocurrió un error al registrar el cliente.");
+            return false;
+        }
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al registrar el cliente. Intente más tarde.");
+        e.printStackTrace();
         return false;
     }
 }
-
 
 
 
