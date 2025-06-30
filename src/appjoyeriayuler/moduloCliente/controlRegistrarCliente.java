@@ -59,4 +59,119 @@ public class controlRegistrarCliente {
         }
         return false;  // Si el DNI no existe, retornamos false
     }
+
+        // Validar si el nombre del cliente está vacío
+    public boolean esNombreClienteValido(String nombre) {
+        return nombre != null && !nombre.trim().isEmpty();
+    }
+
+    // Validar si el nombre del cliente tiene más de 5 caracteres
+    public boolean esNombreMinimo(String nombre) {
+        if (nombre.length() <= 5) {
+            MensajeSistema.mostrarError("El cliente tiene que contener más de 5 caracteres.");
+            return false;
+        }
+        return true;
+    }
+
+    // Validar si el nombre del cliente contiene solo letras
+    public boolean contieneSoloLetras(String nombre) {
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            MensajeSistema.mostrarError("El cliente tiene que contener solamente letras.");
+            return false;
+        }
+        return true;
+    }
+
+    // Validar si el nombre del cliente no excede los 50 caracteres
+    public boolean esNombreMaximo(String nombre) {
+        if (nombre.length() > 50) {
+            MensajeSistema.mostrarError("El cliente no puede tener más de 50 caracteres.");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean esRucVacio(String ruc) {
+    if (ruc == null || ruc.trim().isEmpty()) {
+        return true; // Está vacío
+    }
+    return false; // Tiene contenido
+}
+    
+    // Validar si el RUC tiene solo números
+public boolean esRucNumerico(String ruc) {
+    if (!ruc.matches("[0-9]+")) {
+        MensajeSistema.mostrarError("El RUC debe tener datos numéricos.");
+        return false;
+    }
+    return true;
+}
+
+// Validar si el RUC tiene exactamente 11 dígitos
+public boolean esRucLongitudValida(String ruc) {
+    if (ruc.length() != 11) {
+        MensajeSistema.mostrarError("El RUC solo debe contener 11 dígitos.");
+        return false;
+    }
+    return true;
+}
+
+// Verificar si el RUC ya está registrado en la base de datos
+public boolean rucExiste(String ruc) {
+    if (clienteDAO.rucExiste(ruc)) {
+        MensajeSistema.mostrarError("El RUC se encuentra registrado.");
+        return true;
+    }
+    return false;
+}
+
+// Validar si el teléfono está vacío
+public boolean esTelefonoVacio(String telefono) {
+    return telefono == null || telefono.trim().isEmpty();
+}
+
+// Validar si el teléfono solo tiene números
+public boolean esTelefonoNumerico(String telefono) {
+    if (!telefono.matches("[0-9]+")) {
+        MensajeSistema.mostrarError("El Teléfono debe tener datos numéricos.");
+        return false;
+    }
+    return true;
+}
+
+// Validar si el teléfono tiene exactamente 9 dígitos
+public boolean esTelefonoLongitudValida(String telefono) {
+    if (telefono.length() != 9) {
+        MensajeSistema.mostrarError("El Teléfono solo debe contener 9 dígitos.");
+        return false;
+    }
+    return true;
+}
+
+// Validar si el teléfono ya existe en la base de datos
+public boolean telefonoExiste(String telefono) {
+    if (clienteDAO.telefonoExiste(telefono)) {
+        MensajeSistema.mostrarError("El Teléfono se encuentra registrado.");
+        return true;
+    }
+    return false;
+}
+
+// Método para registrar un cliente desde el controller con mensaje incluido
+public boolean registrarCliente(String dni, String nombre, String ruc, String telefono) {
+    boolean registrado = clienteDAO.registrarCliente(dni, nombre, ruc, telefono);
+
+    if (registrado) {
+        MensajeSistema.mostrarInfo("Cliente registrado correctamente.");
+        return true;
+    } else {
+        MensajeSistema.mostrarError("Ocurrió un error al registrar el cliente.");
+        return false;
+    }
+}
+
+
+
+
 }

@@ -30,4 +30,6 @@ public class ControlSesionUsuario {
     public static int getIdUsuario() {
         return idUsuario;
     }
+    
+    
 }

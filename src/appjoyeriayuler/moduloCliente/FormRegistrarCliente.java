@@ -4,7 +4,12 @@
  */
 package appjoyeriayuler.moduloCliente;
 
+import appjoyeriayuler.securityModule.usuario.ControlSesionUsuario;
+import appjoyeriayuler.securityModule.usuario.FormMenuPrincipal;
 import appjoyeriayuler.shared.MensajeSistema;
+
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -21,11 +26,11 @@ public class FormRegistrarCliente extends javax.swing.JFrame {
         initComponents();        
         setResizable(false);
         setLocationRelativeTo(null);
-        DesactivarTxt();
+        desactivarCampos();
     }
     
     // Método para desactivar los campos
-    public void DesactivarTxt(){
+    public void desactivarCampos(){
         txtCliente.setEnabled(false);
         txtRUC.setEnabled(false);
         txtTelefono.setEnabled(false);
@@ -33,42 +38,100 @@ public class FormRegistrarCliente extends javax.swing.JFrame {
     }
 
     // Método para habilitar los campos cuando el DNI es válido
-    public void HabilitarTxt() {
+    public void habilitarTxt() {
         txtCliente.setEnabled(true);
         txtRUC.setEnabled(true);
         txtTelefono.setEnabled(true);
         btnRegistrarCliente.setEnabled(true);
     }
 
+    private boolean validarClienteCompleto(String nombre) {
+    if (!controlador.esNombreClienteValido(nombre)) {
+        return false;
+    }
+
+    if (!controlador.esNombreMinimo(nombre)) {
+        return false;
+    }
+
+    if (!controlador.contieneSoloLetras(nombre)) {
+        return false;
+    }
+
+    if (!controlador.esNombreMaximo(nombre)) {
+        return false;
+    }
+
+    return true;
+}
+    
     // Método para validar el DNI
-private void validarDNI() {
-    String dni = txtDNI.getText(); // Obtener el valor del DNI desde el campo de texto
-
-    // Validamos si el DNI es válido (no vacío)
+    private boolean validarDNICompleto(String dni) {
     if (!controlador.esDniValido(dni)) {
-        DesactivarTxt(); // Si el DNI no es válido (vacío), desactivar los campos
-        return; // Si falla, no se sigue con las demás validaciones
+        return false;
     }
-
-    // Validamos si el DNI es numérico
     if (!controlador.esNumerico(dni)) {
-        return; // Si falla, no se sigue con las demás validaciones
+        return false;
     }
 
-    // Validamos si el DNI tiene la longitud correcta
     if (!controlador.esLongitudValida(dni)) {
-        return; // Si falla, no se sigue con las demás validaciones
+        return false;
     }
 
-    // Verificamos si el DNI ya existe en la base de datos
     if (controlador.dniExiste(dni)) {
-        return; // Si falla, no se sigue habilitando los campos
+        return false;
     }
 
-    // Si todas las validaciones son correctas, habilitamos los campos
-    txtCliente.setEnabled(true);
+    return true;
 }
 
+// Método para validar el nombre del cliente
+    private boolean validarRUCCompleto(String ruc) {
+    if (controlador.esRucVacio(ruc)) {
+        return true; // RUC vacío es válido (lo puedes almacenar como null o 0)
+    }
+
+    if (!controlador.esRucNumerico(ruc)) {
+        return false;
+    }
+
+    if (!controlador.esRucLongitudValida(ruc)) {
+        return false;
+    }
+
+    if (controlador.rucExiste(ruc)) {
+        return false;
+    }
+
+    return true;
+}
+
+    private boolean validarTelefonoCompleto(String telefono) {
+    if (controlador.esTelefonoVacio(telefono)) {
+        return true;
+    }
+
+    if (!controlador.esTelefonoNumerico(telefono)) {
+        return false;
+    }
+
+    if (!controlador.esTelefonoLongitudValida(telefono)) {
+        return false;
+    }
+
+    if (controlador.telefonoExiste(telefono)) {
+        return false;
+    }
+
+    return true;
+}
+
+    private void limpiarCampos() {
+    txtDNI.setText("");
+    txtCliente.setText("");
+    txtRUC.setText("");
+    txtTelefono.setText("");
+}
 
 
     
@@ -118,6 +181,16 @@ private void validarDNI() {
 
         txtCliente.setBackground(new java.awt.Color(255, 255, 255));
         txtCliente.setForeground(new java.awt.Color(0, 0, 0));
+        txtCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClienteActionPerformed(evt);
+            }
+        });
+        txtCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtClienteKeyReleased(evt);
+            }
+        });
 
         txtRUC.setBackground(new java.awt.Color(255, 255, 255));
         txtRUC.setForeground(new java.awt.Color(0, 0, 0));
@@ -129,11 +202,21 @@ private void validarDNI() {
         btnRegistrarCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRegistrarCliente.setForeground(new java.awt.Color(0, 0, 0));
         btnRegistrarCliente.setText("Registrar Cliente");
+        btnRegistrarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarClienteActionPerformed(evt);
+            }
+        });
 
         btnMenu.setBackground(new java.awt.Color(51, 153, 255));
         btnMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnMenu.setForeground(new java.awt.Color(0, 0, 0));
         btnMenu.setText("Volver a menú principal");
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("DNI:");
 
@@ -214,12 +297,83 @@ private void validarDNI() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDNIKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDNIKeyReleased
-        validarDNI();
+         String dni = txtDNI.getText().trim();
+
+    if (!controlador.esDniValido(dni)) {
+        desactivarCampos();  // Campo vacío → desactiva todo
+    }
+    // No habilites nada aún, esperas al Enter
     }//GEN-LAST:event_txtDNIKeyReleased
 
     private void txtDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDNIActionPerformed
-        
+        String dni = txtDNI.getText().trim();
+
+    if (!validarDNICompleto(dni)) {
+        desactivarCampos();
+        return;
+    }
+
+    txtCliente.setEnabled(true);
     }//GEN-LAST:event_txtDNIActionPerformed
+
+    private void txtClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClienteKeyReleased
+        String nombre = txtCliente.getText().trim();
+
+    if (!controlador.esNombreClienteValido(nombre)) {
+        txtRUC.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        btnRegistrarCliente.setEnabled(false);
+    }
+    // No actives nada aquí, esperas al Enter (igual que con DNI)
+    }//GEN-LAST:event_txtClienteKeyReleased
+
+    private void txtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteActionPerformed
+        String nombre = txtCliente.getText().trim();
+
+    if (!validarClienteCompleto(nombre)) {
+        txtRUC.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        btnRegistrarCliente.setEnabled(false);
+        return;
+    }
+
+    txtRUC.setEnabled(true);
+    txtTelefono.setEnabled(true);
+    btnRegistrarCliente.setEnabled(true);
+    }//GEN-LAST:event_txtClienteActionPerformed
+
+    private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed
+       // Obtener RUC
+        String ruc = txtRUC.getText().trim();
+        if (!validarRUCCompleto(ruc)) return;
+
+        // Obtener Teléfono
+        String telefono = txtTelefono.getText().trim();
+        if (!validarTelefonoCompleto(telefono)) return;
+
+        // Obtener DNI y Cliente
+        String dni = txtDNI.getText().trim();
+        String cliente = txtCliente.getText().trim();
+
+        // Registrar cliente usando el controlador
+        if (controlador.registrarCliente(dni, cliente, ruc, telefono)) {
+            limpiarCampos();
+            desactivarCampos();
+            txtDNI.requestFocus(); // Volver a enfocar para registrar otro cliente
+        }    
+    }//GEN-LAST:event_btnRegistrarClienteActionPerformed
+
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
+        // Obtener privilegios desde la sesión actual
+    /*
+    List<String> privilegios = ControlSesionUsuario.getPrivilegios();
+
+    // Cerrar el formulario actual
+    this.dispose();
+
+    // Abrir el menú principal con privilegios
+    new FormMenuPrincipal(privilegios).setVisible(true);*/
+    }//GEN-LAST:event_btnMenuActionPerformed
 
     /**
      * @param args the command line arguments
