@@ -11,8 +11,7 @@
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/usuario/UsuarioDAO.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/usuario/estadoDAO.java</file>
             <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/Conexion.java</file>
-            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/moduloCliente/controlRegistrarCliente.java</file>
-            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/moduloCliente/FormRegistrarCliente.java</file>
+            <file>file:/C:/Users/carlo/Documents/NetBeansProjects/AppJoyeriaYul/src/appjoyeriayuler/model/usuario/clienteDAO.java</file>
         </group>
     </open-files>
 </project-private>

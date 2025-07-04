@@ -1,25 +1,35 @@
-package appjoyeriayuler.moduloCliente;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package appjoyeriayuler.moduloCliente.EditarCliente;
 
 import appjoyeriayuler.model.usuario.clienteDAO;
+import appjoyeriayuler.moduloCliente.RegistrarCliente.FormRegistrarCliente;
 import appjoyeriayuler.securityModule.usuario.ControlSesionUsuario;
 import appjoyeriayuler.shared.MensajeSistema;
+import java.util.ArrayList;
+import java.util.List;
 
-public class controlRegistrarCliente {
-
-    private FormRegistrarCliente formRegistrarCliente; // Referencia al formulario
+/**
+ *
+ * @author carlo
+ */
+public class controlEditarCliente {
+    private FormEditarCliente formEditarCliente; // Referencia al formulario
     private clienteDAO clienteDAO;  // Instancia del clienteDAO para verificar si el DNI ya existe
 
     // Constructor para inicializar clienteDAO
-    public controlRegistrarCliente() {
+    public controlEditarCliente() {
         clienteDAO = new clienteDAO(); // Inicializamos el clienteDAO
     }
 
-    // Método para mostrar el formulario de Registrar Cliente
-    public void formRegistrarClienteShow() {
+    // Método para mostrar el formulario de Editar Cliente
+    public void formEditarClienteShow() {
         // Si la sesión está activa, crea y muestra el formulario
         if (ControlSesionUsuario.estaLogueado()) {
-            formRegistrarCliente = new FormRegistrarCliente();  // Crear el formulario aquí
-            formRegistrarCliente.setVisible(true);  // Mostrar el formulario
+            formEditarCliente = new FormEditarCliente();  // Crear el formulario aquí
+            formEditarCliente.setVisible(true);  // Mostrar el formularioformEditarCliente
         } else {
             MensajeSistema.mostrarError("Debes iniciar sesión para acceder a esta opción.");
         }
@@ -64,6 +74,37 @@ public boolean dniExiste(String dni) {
     }
     return false;
 }
+
+public boolean dninoExiste(String dni) {
+    try {
+        if (!clienteDAO.dniExiste(dni)) {
+            MensajeSistema.mostrarError("El DNI no está registrado.");
+            return false;
+        }
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al verificar el DNI. Intente más tarde.");
+        e.printStackTrace(); // Reemplazar por logger en producción
+    }
+    return true;
+}
+
+public List<String> buscarClienteDatos(String dni) {
+    List<String> resultado = new ArrayList<>();
+
+    try {
+        resultado = clienteDAO.buscarCliente(dni);
+
+        if (resultado.isEmpty()) {
+            MensajeSistema.mostrarError("El cliente no está registrado.");
+        }
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al buscar el cliente.");
+        e.printStackTrace();
+    }
+
+    return resultado;
+}
+
 
         // Validar si el nombre del cliente está vacío
     public boolean esNombreClienteValido(String nombre) {
@@ -192,6 +233,38 @@ public boolean registrarCliente(String dni, String nombre, String ruc, String te
     }
 }
 
+public boolean actualizarCliente(String dni, String nombre, String ruc, String telefono) {
+    // Confirmación antes de editar
+    if (!MensajeSistema.mostrarConfirmacion("¿Está seguro de editar este cliente?", "Mensaje")) {
+        return false;
+    }
+
+    try {
+        // Obtener idCliente por el DNI
+        Integer idCliente = clienteDAO.obtenerIdClientePorDNI(dni);
+        if (idCliente == null) {
+            MensajeSistema.mostrarError("No se encontró el cliente con el DNI proporcionado.");
+            return false;
+        }
+
+        // Intentar actualizar
+        boolean actualizado = clienteDAO.actualizarCliente(idCliente, nombre, ruc, telefono);
+
+        if (actualizado) {
+            MensajeSistema.mostrarInfo("Cliente actualizado correctamente.");
+            return true;
+        } else {
+            MensajeSistema.mostrarError("No se pudo actualizar el cliente.");
+            return false;
+        }
+    } catch (Exception e) {
+        MensajeSistema.mostrarError("Error al actualizar el cliente.");
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
 
 }
+

@@ -4,7 +4,8 @@
  */
 package appjoyeriayuler.securityModule.usuario;
 
-import appjoyeriayuler.moduloCliente.controlRegistrarCliente;
+import appjoyeriayuler.moduloCliente.EditarCliente.controlEditarCliente;
+import appjoyeriayuler.moduloCliente.RegistrarCliente.controlRegistrarCliente;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
 
 
     private controlRegistrarCliente controlRegistrarCliente = new controlRegistrarCliente();
+    private controlEditarCliente controlEditarCliente = new controlEditarCliente();
 
     /**
      * Creates new form FormBienvenida
@@ -46,6 +48,9 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
         this.dispose();
         // Llamamos al controlador para mostrar el formulario de Registrar Cliente
         controlRegistrarCliente.formRegistrarClienteShow();
+    } else if ("Editar cliente".equals(privilegio)){
+        this.dispose();
+        controlEditarCliente.formEditarClienteShow();
     } else {
         // Lógica para otros privilegios si es necesario
         JOptionPane.showMessageDialog(this, "Acción no permitida para este privilegio.");

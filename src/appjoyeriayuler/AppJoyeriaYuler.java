@@ -1,7 +1,7 @@
 package appjoyeriayuler;
 
-import appjoyeriayuler.moduloCliente.FormRegistrarCliente;
-import appjoyeriayuler.moduloCliente.controlRegistrarCliente;
+import appjoyeriayuler.moduloCliente.RegistrarCliente.FormRegistrarCliente;
+import appjoyeriayuler.moduloCliente.RegistrarCliente.controlRegistrarCliente;
 import appjoyeriayuler.securityModule.usuario.FormAutenticarUsuario;
 
 public class AppJoyeriaYuler {
